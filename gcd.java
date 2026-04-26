@@ -1,40 +1,44 @@
+package demo;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 public class gcd {
-    private WebDriver driver;
+    public static void main(String[] args) {
 
-    @Before
-    public void setUp() {
+        // Setup EdgeDriver
         System.setProperty("webdriver.edge.driver", "C:\\edgedriver\\msedgedriver.exe");
-        driver = new EdgeDriver();
+        WebDriver driver = new EdgeDriver();
         driver.manage().window().maximize();
-        driver.get("file:///D:/gcd.html");
-    }
 
-    @Test
-    public void testGcd() {
-        WebElement num1 = driver.findElement(By.name("n1"));
-        WebElement num2 = driver.findElement(By.name("n2"));
-        WebElement button = driver.findElement(By.cssSelector("input[type='button']"));
-        WebElement result = driver.findElement(By.name("result"));
+        try {
+            // Open GCD HTML page
+            driver.get("file:///D:/gcd.html");
 
-        num1.sendKeys("5");
-        num2.sendKeys("6");
-        button.click();
+            // Find input fields and button
+            WebElement num1Input = driver.findElement(By.id("num1"));
+            WebElement num2Input = driver.findElement(By.id("num2"));
+            WebElement calculateButton = driver.findElement(
+                    By.xpath("//button[text()='Calculate GCD']"));
 
-        // Get the result value
-        String gcdResult = result.getAttribute("value");
-        System.out.println("The GCD is: " + gcdResult);
-    }
+            // Enter numbers
+            num1Input.sendKeys("5");
+            num2Input.sendKeys("6");
 
-    @After
-    public void tearDown() {
-        driver.quit();
+            // Click calculate
+            calculateButton.click();
+
+            // Wait for result
+            Thread.sleep(2000);
+
+            // Get and print result
+            WebElement result = driver.findElement(By.id("result"));
+            System.out.println("Test Result: " + result.getText());
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
